@@ -1,0 +1,58 @@
+# dotenv
+.env
+.env.*
+
+# Build output
+dist/
+build/
+.cache/
+.next/
+out/
+
+# Logs
+logs
+*.log
+*.tsbuildinfo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# -------------------
+# NestJS Specific
+# -------------------
+# Compiled output
+backend/node_modules/
+/backend/dist/
+/backend/.webpack/
+
+/backend/coverage/
+/backend/test-results/
+
+# Uploads Folder
+server/uploads/
+
+# -------------------
+# React Specific
+# -------------------
+frontend/node_modules/
+/frontend/build/
+/frontend/.env.local
+/frontend/.env.development.local
+/frontend/.env.test.local
+/frontend/.env.production.local
+
+# -------------------
+# Optional
+# -------------------
+.idea/
+.vscode/
+*.swp
+
+# Mac system files
+.AppleDouble
+.LSOverride
+
+# Windows system files
+ehthumbs.db
+Desktop.ini
