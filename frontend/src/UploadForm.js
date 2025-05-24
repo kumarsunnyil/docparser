@@ -1,5 +1,13 @@
 import React, { useState } from "react";
 import axios from "axios";
+import {
+  Button,
+  TextField,
+  Typography,
+  LinearProgress,
+  Box,
+  Container,
+} from "@mui/material";
 
 const UploadForm = ({ onResult }) => {
   const apiUrl = process.env.REACT_APP_API_URL;
@@ -24,7 +32,6 @@ const UploadForm = ({ onResult }) => {
     setProgress(0);
 
     try {
-        console.log("API URL= ", apiUrl);
       const response = await axios.post(`${apiUrl}/document/upload`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
         onUploadProgress: (e) => {
@@ -33,7 +40,7 @@ const UploadForm = ({ onResult }) => {
         },
       });
 
-      onResult(response.data); // Expecting highlighted content
+      onResult(response.data); // Expecting highlighted HTML
     } catch (error) {
       alert("Upload failed. Check server logs.");
     } finally {
@@ -42,53 +49,52 @@ const UploadForm = ({ onResult }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-4 border rounded shadow-sm">
-      <div className="mb-3">
-        <label className="form-label">Select PDF File</label>
-        <input
-          type="file"
-          className="form-control"
-          onChange={(e) => setFile(e.target.files[0])}
-        />
-        {file && <div className="form-text">Selected: {file.name}</div>}
-      </div>
+    <Container maxWidth="sm">
+      <Box
+        component="form"
+        onSubmit={handleSubmit}
+        sx={{ p: 4, border: "1px solid #ccc", borderRadius: 2, boxShadow: 1 }}
+      >
+        <Typography variant="h6" gutterBottom>
+          Upload PDF and Enter Keywords
+        </Typography>
 
-      <div className="mb-3">
-        <label className="form-label">Keywords</label>
-        <input
-          type="text"
-          className="form-control"
+        <Button variant="outlined" component="label" fullWidth sx={{ mb: 2 }}>
+          {file ? file.name : "Choose File"}
+          <input
+            type="file"
+            hidden
+            onChange={(e) => setFile(e.target.files[0])}
+          />
+        </Button>
+
+        <TextField
+          fullWidth
+          label="Keywords"
+          placeholder="e.g., react, nestjs, jwt"
           value={keywords}
           onChange={(e) => setKeywords(e.target.value)}
-          placeholder="e.g., react, nestjs, jwt"
+          margin="normal"
         />
-      </div>
 
-      {loading && (
-        <div className="mb-3">
-          <div className="progress">
-            <div
-              className="progress-bar"
-              role="progressbar"
-              style={{ width: `${progress}%` }}
-              aria-valuenow={progress}
-              aria-valuemin="0"
-              aria-valuemax="100"
-            >
-              {progress}%
-            </div>
-          </div>
-        </div>
-      )}
+        {loading && (
+          <Box sx={{ my: 2 }}>
+            <LinearProgress variant="determinate" value={progress} />
+            <Typography variant="caption">{progress}%</Typography>
+          </Box>
+        )}
 
-      <button
-        type="submit"
-        className="btn btn-primary"
-        disabled={loading}
-      >
-        {loading ? "Uploading..." : "Upload & Highlight"}
-      </button>
-    </form>
+        <Button
+          variant="contained"
+          color="primary"
+          type="submit"
+          fullWidth
+          disabled={loading}
+        >
+          {loading ? "Uploading..." : "Upload & Highlight"}
+        </Button>
+      </Box>
+    </Container>
   );
 };
 

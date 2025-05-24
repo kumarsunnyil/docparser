@@ -1,28 +1,28 @@
 import React, { useState } from "react";
+
 import UploadForm from "./UploadForm";
+import { Box, Typography, Paper } from "@mui/material";
 
 function App() {
-    const [htmlContent, setHtmlContent] = useState("");
   const apiUrl = process.env.REACT_APP_API_URL;
-
-  console.log("API URL:", apiUrl);
+   const [result, setResult] = useState("");
 
   return (
-  <div className="container mt-5">
-      <h2 className="mb-4">PDF Keyword Highlighter</h2>
+    <Box sx={{ mt: 4 }}>
+      <UploadForm onResult={setResult} />
 
-      <UploadForm onResult={setHtmlContent} />
-
-      {htmlContent && (
-        <div className="mt-5">
-          <h4>Highlighted Content</h4>
+      {result && (
+        <Paper elevation={3} sx={{ p: 3, mt: 4, background: "#f9f9f9" }}>
+          <Typography variant="h6" gutterBottom>
+            Highlighted Content
+          </Typography>
           <div
-            className="border rounded p-3 bg-light"
-            dangerouslySetInnerHTML={{ __html: htmlContent }}
+            dangerouslySetInnerHTML={{ __html: result }}
+            style={{ whiteSpace: "pre-wrap", lineHeight: "1.5" }}
           />
-        </div>
+        </Paper>
       )}
-    </div>
+    </Box>
   );
 }
 
