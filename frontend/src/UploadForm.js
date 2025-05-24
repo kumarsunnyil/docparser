@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import {
+  Alert,
   Button,
   TextField,
   Typography,
@@ -15,6 +16,7 @@ const UploadForm = ({ onResult }) => {
   const [keywords, setKeywords] = useState("");
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [error, setError] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -42,7 +44,8 @@ const UploadForm = ({ onResult }) => {
 
       onResult(response.data); // Expecting highlighted HTML
     } catch (error) {
-      alert("Upload failed. Check server logs.");
+      // alert("Upload failed. Check server logs.");
+      setError("Upload failed. Check server logs.");
     } finally {
       setLoading(false);
     }
@@ -50,13 +53,18 @@ const UploadForm = ({ onResult }) => {
 
   return (
     <Container maxWidth="sm">
+      {error && (
+        <Alert severity="error" sx={{ mb: 2 }}>
+          {error}
+        </Alert>
+      )}
       <Box
         component="form"
         onSubmit={handleSubmit}
         sx={{ p: 4, border: "1px solid #ccc", borderRadius: 2, boxShadow: 1 }}
       >
         <Typography variant="h6" gutterBottom>
-          Upload PDF and Enter Keywords
+          Check for matching keywords
         </Typography>
 
         <Button variant="outlined" component="label" fullWidth sx={{ mb: 2 }}>
